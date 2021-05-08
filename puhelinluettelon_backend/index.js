@@ -65,6 +65,18 @@ app.post('/api/persons/', (req, res) => {
     const max = Math.floor(87654)
     const newId = Math.floor(Math.random() * (max-min) + min)
 
+    if (!req.body.name || !req.body.number) {
+        return res.status(400).json({
+            error: 'name or number is missing'
+        })
+    }
+
+    if (connections.some(c => c.name === req.body.name)) {
+        return res.status(400).json({
+            error: 'name must be unique'
+        })
+    }
+
     const connection = {
         id: newId,
         name: req.body.name || false,
