@@ -1,3 +1,4 @@
+const { response } = require('express')
 const express = require('express')
 const app = express()
 
@@ -36,6 +37,18 @@ app.get('/api/info', (req, res) => {
     const timestamp = new Date()
     const peopleAmount = connections.length
     res.send(`<p>Phonebook has info for ${peopleAmount} people.</p> <p> ${timestamp} </p>`)
+})
+
+app.get('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const contactInfo = connections.find(connection => connection.id === id)
+
+    if (contactInfo) {
+        res.json(contactInfo)
+    } else {
+        res.status(404).end()
+    }
+    
 })
 
 const port = 3001
