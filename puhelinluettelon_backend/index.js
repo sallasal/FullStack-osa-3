@@ -2,6 +2,8 @@ const { response } = require('express')
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 let connections = [
     {
         id: 1,
@@ -56,6 +58,21 @@ app.delete('/api/persons/:id', (req, res) => {
     connections = connections.filter(connection => connection.id !== id)
 
     res.status(204).end()
+})
+
+app.post('/api/persons/', (req, res) => {
+    const min = Math.ceil(0)
+    const max = Math.floor(87654)
+    const newId = Math.floor(Math.random() * (max-min) + min)
+
+    const connection = {
+        id: newId,
+        name: req.body.name || false,
+        number: req.body.number || false
+    }
+
+    connections = connections.concat(connection)
+    res.json(connection)
 })
 
 const port = 3001
