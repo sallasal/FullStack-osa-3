@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
-app.use(morgan('tiny'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :json'))
 
 let connections = [
     {
@@ -28,6 +28,11 @@ let connections = [
         number: "39-23-6423122"
     }
 ]
+
+morgan.token('json', (req, res) => { 
+    const stringres = JSON.stringify(req.body)
+    return stringres
+})
 
 app.get('/', (req, res) => {
     res.send('<h1>Puhelinluettelosovellus</h1>')
